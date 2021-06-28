@@ -1,21 +1,21 @@
 import React from "react";
 import "./VideoItem.css";
 
-function Item(props) {
+function Item({ setSelectedVideo, video }) {
   return (
     <div
       className="video-item item"
       onClick={() => {
-        props.onVideoSelect(props.video);
+        setSelectedVideo(video);
       }}
     >
       <img
         className="ui image"
-        src={props.video.snippet.thumbnails.medium.url}
-        alt={props.video.snippet.title}
+        src={video.snippet.thumbnails.medium.url}
+        alt={video.snippet.title}
       />
       <div class="content">
-        <div class="header">{props.video.snippet.title}</div>
+        <div class="header">{video.snippet.title}</div>
       </div>
     </div>
   );

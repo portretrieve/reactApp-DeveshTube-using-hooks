@@ -3,10 +3,6 @@ import "./SearchBar.css";
 const SearchBar = ({ onSearch }) => {
   const [userInput, setUserInput] = useState("");
 
-  const onInputChange = (event) => {
-    setUserInput(event.target.value);
-  };
-
   const onFormSubmit = (event) => {
     event.preventDefault();
     onSearch(userInput);
@@ -21,7 +17,7 @@ const SearchBar = ({ onSearch }) => {
             name="videoSearch"
             id="videoSearch"
             value={userInput}
-            onChange={onInputChange}
+            onChange={(event) => setUserInput(event.target.value)}
             placeholder="Type to search video"
           />
           <br /> <br />

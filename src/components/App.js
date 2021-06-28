@@ -1,53 +1,34 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
-import youtube from "../apis/youTube";
 import SearchBar from "./SearchBar";
 import VideoList from "./VideoList";
 import VideoDetail from "./VideoDetail";
-class App extends React.Component {
-  state = { videosList: [], selectedVideo: null };
+import useVideos from "../hooks/useVideos";
 
-  onSearch = async (textInput) => {
-    const response = await youtube.get("/search", {
-      params: {
-        q: textInput
-      }
-    });
-    this.setState({
-      videosList: response.data.items,
-      selectedVideo: response.data.items[0]
-    });
-  };
+const App = () => {
+  const [selectedVideo, setSelectedVideo] = useState(null);
+  const [videoList, onSearch] = useVideos("Water Fasting");
 
-  onVideoClick = (video) => {
-    this.setState({ selectedVideo: video });
-  };
+  useEffect(() => {
+    setSelectedVideo(videoList[0]);
+  }, [videoList]);
 
-  componentDidMount() {
-    this.onSearch("intermittent fasting");
-  }
-
-  render() {
-    return (
-      <div className="ui container">
-        <h1>Welcome to DeveshTube</h1>
-        <SearchBar onSearch={this.onSearch} />
-        <div className="ui grid">
-          <div className="ui row">
-            <div className="eleven wide column">
-              <VideoDetail video={this.state.selectedVideo} />
-            </div>
-            <div className="five wide column">
-              <VideoList
-                videos={this.state.videosList}
-                onVideoSelect={this.onVideoClick}
-              />
-            </div>
+  return (
+    <div className="ui container">
+      <h1>Welcome to DeveshTube</h1>
+      <SearchBar onSearch={onSearch} />
+      <div className="ui grid">
+        <div className="ui row">
+          <div className="eleven wide column">
+            <VideoDetail video={selectedVideo} />
+          </div>
+          <div className="five wide column">
+            <VideoList videos={videoList} setSelectedVideo={setSelectedVideo} />
           </div>
         </div>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 export default App;
